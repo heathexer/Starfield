@@ -1,41 +1,57 @@
-NormalParticle particle = new NormalParticle();
+Particle[] stars = new Particle[250];
 void setup() {
 	ellipseMode(CENTER);
 	noStroke();
 	size(800, 800);
+	for(int i = 2; i < stars.length; i++) stars[i] = new NormalParticle();
+	stars[0] = new JumboParticle();
+	stars[1] = new JumboParticle();
 }
 void draw() {
-	fill(0, 0, 0, 100);
-	rect(0, 0, width, height);
-	particle.move();
-	particle.show();
+	background(0, 0, 10);
+	for(int i = 0; i < stars.length; i++) {
+		stars[i].move();
+		stars[i].show();
+	}
 }
 class NormalParticle implements Particle {
-	double dist, rotation, speed, acceleration;
+	public double dist, rotation, speed, acceleration, size, sizeAccel;
 	NormalParticle() {
-		this.dist = 0;
+		this.dist = Math.random()*566;
 		this.rotation = Math.random()*360;
-		this.speed = Math.random()*3+1;
-		this.acceleration = 1.01;
+		this.speed = Math.random()+.5;
+		this.acceleration = 1.05;
+		this.sizeAccel = 1.03;
+		this.size = 1;
 	}
 	void move() {
 		this.dist+=this.speed;
 		this.speed *= this.acceleration;
+		this.size *= this.sizeAccel;
+		if(this.dist > 566) {
+			this.reset();
+		}
 	}
 	void show() {
-		fill(255);
+		fill(255, 255, 210);
 		pushMatrix();
 		translate(width/2, height/2);
 		rotate(radians((float)(rotation)));
-		ellipse(0, (float)(dist), 1, 1);
+		ellipse(0, (float)(dist), (float)(this.size), (float)(this.size));
 		popMatrix();
+	}
+	void reset() {
+		this.dist = Math.random()*500 + 25;
+		this.speed = Math.random()+.5;
+		this.rotation = Math.random()*360;
+		this.size = 1;
 	}
 }
 interface Particle {
-	void move();
-	void show();
+	public void move();
+	public void show();
 }
-class OddballParticle implements Particle {//uses an interface
+class OddballParticle implements Particle {
 	void move() {
 
 	}
@@ -43,11 +59,11 @@ class OddballParticle implements Particle {//uses an interface
 
 	}
 }
-class JumboParticle implements Particle {//uses inheritance
-	void move() {
-
+class JumboParticle extends NormalParticle {
+	JumboParticle() {
+		this.sizeAccel = 1.06;
 	}
-	void show() {
-
+	void move() {
+		super.move();
 	}
 }
