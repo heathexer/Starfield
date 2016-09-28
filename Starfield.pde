@@ -26,7 +26,7 @@ class NormalParticle implements Particle {
 	public double dist, rotation, speed, acceleration, size, sizeAccel;
 	public color tint;
 	NormalParticle() {
-		this.dist = Math.random()*566;
+		this.dist = Math.random()*500 + 25;
 		this.rotation = Math.random()*360;
 		this.speed = Math.random()+.5;
 		this.acceleration = 1.05;
@@ -71,5 +71,14 @@ class OddballParticle extends NormalParticle {
 class JumboParticle extends NormalParticle {
 	JumboParticle() {
 		this.sizeAccel = 1.06;
+		this.dist = Math.random()*25+25;
+	}
+	void move() {
+		super.move();
+		// this.size += .5;
+	}
+	void reset() {
+		super.reset();
+		this.dist = Math.random()*100+25;
 	}
 }
